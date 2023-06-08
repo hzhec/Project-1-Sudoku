@@ -58,7 +58,7 @@ numberBox.forEach((element) =>
 		const messageBox = document.querySelector(".message-box");
 		let num = event.target.innerText;
 
-		event.target.classList.toggle("selected");
+		event.target.classList.add("selected");
 		// console.log(event.target.classList);
 		// console.log(event.currentTarget);
 
@@ -75,7 +75,7 @@ numberBox.forEach((element) =>
 		if (activeBtn === null) {
 			activeBtn = event.target;
 		} else if (activeBtn !== event.target) {
-			activeBtn.classList.toggle("selected");
+			activeBtn.classList.remove("selected");
 			activeBtn = event.target;
 		}
 
@@ -109,9 +109,7 @@ const generateSudoku = () => {
 generateSudoku();
 
 const newGame = document.querySelector(".new-game");
-newGame.addEventListener("click", () => {
-	generateSudoku();
-});
+newGame.addEventListener("click", generateSudoku);
 
 const submitGame = document.querySelector(".submit");
 submitGame.addEventListener("click", () => {
