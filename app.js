@@ -52,10 +52,16 @@ let sudokuBoard = {
 
 // Create number 1 - 9 for input purpose
 const numberBox = document.querySelectorAll(".number-selector");
+let activeBtn = null;
 numberBox.forEach((element) =>
 	element.addEventListener("click", (event) => {
 		const messageBox = document.querySelector(".message-box");
 		let num = event.target.innerText;
+
+		event.target.classList.toggle("selected");
+		// console.log(event.target.classList);
+		// console.log(event.currentTarget);
+
 		if (num === "Clear") {
 			selectedNum = "";
 			messageBox.innerText = `Select a box to clear the number`;
@@ -65,6 +71,15 @@ numberBox.forEach((element) =>
 			// console.log(num); // string type
 			// console.log(typeof event.target.innerText);
 		}
+
+		if (activeBtn === null) {
+			activeBtn = event.target;
+		} else if (activeBtn !== event.target) {
+			activeBtn.classList.toggle("selected");
+			activeBtn = event.target;
+		}
+
+		// console.log(activeBtn);
 	})
 );
 
