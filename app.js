@@ -1,3 +1,5 @@
+let selectedNum = "";
+
 // Create a 9x9 board
 for (let i = 0; i < 81; i++) {
 	const square = document.createElement("div");
@@ -54,9 +56,15 @@ numberBox.forEach((element) =>
 	element.addEventListener("click", (event) => {
 		const messageBox = document.querySelector(".message-box");
 		let num = event.target.innerText;
-		messageBox.innerText = `Selected number: ${num}`;
-		console.log(num); // string type
-		// console.log(typeof event.target.innerText);
+		if (num === "Clear") {
+			selectedNum = "";
+			messageBox.innerText = `Select a box to clear the number`;
+		} else {
+			messageBox.innerHTML = `Selected number: <span>${num}</span>`;
+			selectedNum = num;
+			// console.log(num); // string type
+			// console.log(typeof event.target.innerText);
+		}
 	})
 );
 
@@ -70,7 +78,15 @@ const generateSudoku = () => {
 		let num = sudokuBoard[randomIndex][i];
 		squares[i].innerText = "";
 		if (num !== 0) {
+			if (squares[i].classList.contains("active")) {
+				squares[i].classList.remove("active");
+			}
 			squares[i].innerText = num;
+		} else {
+			squares[i].classList.add("active");
+			squares[i].addEventListener("click", (event) => {
+				event.currentTarget.innerText = selectedNum;
+			});
 		}
 	}
 };
