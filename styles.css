@@ -14,7 +14,9 @@ body {
 	border: 5px solid black;
 	border-radius: 25px;
 	box-shadow: 6px 7px 10px rgb(168, 168, 168);
+	background-color: whitesmoke;
 }
+
 header {
 	width: 100%;
 	font-size: 40px;
@@ -47,11 +49,12 @@ header {
 }
 
 .even-box {
-	background-color: rgb(239, 239, 239);
+	background-color: rgb(246, 246, 246);
 }
 
 .active {
 	color: blue;
+	font-weight: bold;
 }
 
 .active:hover {
@@ -73,9 +76,11 @@ header {
 }
 
 .message-box span {
-	margin: 0px 20px;
+	margin: 4px 20px;
 	color: red;
 	font-size: 30px;
+	padding: 0px 75px;
+	border: 1px solid rgb(161, 161, 161);
 }
 
 .number-box {
@@ -97,39 +102,53 @@ header {
 	font-weight: bold;
 	margin: 10px;
 	padding: 5px;
-	border: 2px solid grey;
+	border: 2px solid rgb(161, 161, 161);
 	border-radius: 10px;
+	background-color: white;
 }
 
 .selected {
-	background-color: grey;
-	color: white;
-	border: 7px inset black;
+	background-color: lightgoldenrodyellow;
+	color: black;
+	border: 7px inset rgb(169, 169, 169);
 }
 
 .number-selector:hover {
-	background-color: grey;
-	color: white;
-	border: 5px solid rgb(72, 72, 72);
+	background-color: lightgoldenrodyellow;
+	color: black;
+	border: 6px outset rgb(169, 169, 169);
 }
 
 .number-selector:focus {
-	background-color: grey;
-	color: white;
-	border: 7px inset black;
+	background-color: lightgoldenrodyellow;
+	color: black;
+	border: 7px inset rgb(169, 169, 169);
 }
 
 .button-box {
 	width: 80%;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: space-evenly;
 }
 
 .button-box button {
-	background-color: white;
+	width: 120px;
 	margin: 30px;
-	padding: 10px;
-	font-size: 20px;
-	border-radius: 20px;
+	padding: 5px;
+	font-size: 15px;
+	border-radius: 15px;
+	font-weight: bold;
+}
+
+.new-game-btn {
+	background-color: rgb(194, 232, 255);
+}
+
+.submit-btn {
+	background-color: rgb(193, 251, 193);
+}
+
+.reset-btn {
+	background-color: rgb(249, 194, 194);
 }
