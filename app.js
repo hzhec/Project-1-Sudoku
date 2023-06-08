@@ -60,7 +60,7 @@ numberBox.forEach((element) =>
 		let num = event.target.innerText;
 
 		event.target.classList.add("selected");
-		// console.log(event.target.classList);
+		// console.log(event.target);
 		// console.log(event.currentTarget);
 
 		if (num === "Clear") {
@@ -73,6 +73,7 @@ numberBox.forEach((element) =>
 			// console.log(typeof event.target.innerText);
 		}
 
+		// Reference taken from https://dev.to/oliwier965/multiple-buttons-only-one-active-on-click-50on
 		if (activeBtn === null) {
 			activeBtn = event.target;
 		} else if (activeBtn !== event.target) {
@@ -88,6 +89,7 @@ const randomBoard = () => {
 	const randomIndex = parseInt(
 		Math.floor(Math.random() * Object.keys(sudokuBoard).length)
 	);
+	// Clone array to loadedBoard
 	return (loadedBoard = [...sudokuBoard[randomIndex]]);
 };
 
@@ -113,6 +115,8 @@ const generateSudoku = (array) => {
 
 const newGame = document.querySelector(".new-game");
 newGame.addEventListener("click", () => {
+	document.querySelector(".text-box").style.display = "flex";
+	document.querySelector(".number-box").style.display = "flex";
 	generateSudoku(randomBoard());
 });
 
