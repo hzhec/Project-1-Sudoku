@@ -1,6 +1,49 @@
 let selectedNum = "";
 let loadedBoard = [];
 
+// Taking reference from https://lisperator.net/blog/javascript-sudoku-solver/
+// Convert index of a value in an array to row and column
+const indexToRowCol = (index) => {
+	return { row: Math.floor(index / 9), col: index % 9 };
+};
+
+// Convert value with row and column to its index of an array
+const rowColToIndex = (row, col) => {
+	return row * 9 + col;
+};
+
+const checkDuplicates = (array, index, value) => {
+	let valuePosition = indexToRowCol(index);
+
+	// Check if the number duplicated in the same row
+	for (let col = 0; col < 9; col++) {
+		if (array[rowColToIndex(valuePosition.row, col)] === value) {
+			return true;
+		}
+	}
+
+	// Check if the number duplicated in the same col
+	for (let row = 0; row < 9; row++) {
+		if (array[rowColToIndex(row, valuePosition.col)] === value) {
+			return true;
+		}
+	}
+
+	// Check if the number duplicated in 3x3 box
+	let boxRow = Math.floor(valuePosition.row / 3) * 3;
+	let boxCol = Math.floor(valuePosition.col / 3) * 3;
+	for (let row = boxRow; row < boxRow + 3; row++) {
+		for (let col = boxCol; col < boxCol + 3; col++) {
+			if (array[rowColToIndex(row, col)] === value) {
+				return true;
+			}
+		}
+	}
+
+	// If no duplicates found, return false.
+	return false;
+};
+
 // Create a 9x9 board
 for (let i = 0; i < 81; i++) {
 	const square = document.createElement("div");
