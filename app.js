@@ -1,4 +1,5 @@
 let selectedNum = "";
+let loadedBoard = [];
 
 // Create a 9x9 board
 for (let i = 0; i < 81; i++) {
@@ -66,7 +67,7 @@ numberBox.forEach((element) =>
 			selectedNum = "";
 			messageBox.innerText = `Select a box to clear the number`;
 		} else {
-			messageBox.innerHTML = `Selected number: <span>${num}</span>`;
+			messageBox.innerHTML = `Selected number:<br> <span>${num}</span>`;
 			selectedNum = num;
 			// console.log(num); // string type
 			// console.log(typeof event.target.innerText);
@@ -83,14 +84,18 @@ numberBox.forEach((element) =>
 	})
 );
 
-const generateSudoku = () => {
-	const squares = document.querySelectorAll(".square");
-	// Generate random number to load the sudoku puzzle randomly
+const randomBoard = () => {
 	const randomIndex = parseInt(
 		Math.floor(Math.random() * Object.keys(sudokuBoard).length)
 	);
+	return (loadedBoard = [...sudokuBoard[randomIndex]]);
+};
+
+const generateSudoku = (array) => {
+	const squares = document.querySelectorAll(".square");
+	// Generate random number to load the sudoku puzzle randomly
 	for (let i = 0; i < 81; i++) {
-		let num = sudokuBoard[randomIndex][i];
+		let num = array[i];
 		squares[i].innerText = "";
 		if (num !== 0) {
 			if (squares[i].classList.contains("active")) {
@@ -106,10 +111,10 @@ const generateSudoku = () => {
 	}
 };
 
-generateSudoku();
-
 const newGame = document.querySelector(".new-game");
-newGame.addEventListener("click", generateSudoku);
+newGame.addEventListener("click", () => {
+	generateSudoku(randomBoard());
+});
 
 const submitGame = document.querySelector(".submit");
 submitGame.addEventListener("click", () => {
@@ -117,4 +122,9 @@ submitGame.addEventListener("click", () => {
 	const array = [];
 	squares.forEach((element) => array.push(element.innerText));
 	console.log(array);
+});
+
+const resetBoard = document.querySelector(".reset-btn");
+resetBoard.addEventListener("click", () => {
+	console.log(loadedBoard);
 });

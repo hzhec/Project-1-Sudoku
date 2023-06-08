@@ -13,6 +13,7 @@ body {
 	align-items: center;
 	border: 5px solid black;
 	border-radius: 25px;
+	box-shadow: 6px 7px 10px rgb(168, 168, 168);
 }
 header {
 	width: 100%;
@@ -20,7 +21,7 @@ header {
 	font-weight: bold;
 	text-align: center;
 	margin: 25px auto;
-	text-shadow: 4px 3px rgb(170, 170, 170);
+	text-shadow: 4px 3px 6px rgb(120, 120, 120);
 }
 
 .game-box {
@@ -68,12 +69,13 @@ header {
 .message-box {
 	font-size: 20px;
 	font-weight: bold;
+	text-align: center;
 }
 
 .message-box span {
 	margin: 0px 20px;
 	color: red;
-	font-size: 25px;
+	font-size: 30px;
 }
 
 .number-box {
@@ -102,19 +104,19 @@ header {
 .selected {
 	background-color: grey;
 	color: white;
-	border: 2px solid black;
+	border: 7px inset black;
 }
 
 .number-selector:hover {
 	background-color: grey;
 	color: white;
-	border: 2px solid black;
+	border: 5px solid rgb(72, 72, 72);
 }
 
 .number-selector:focus {
 	background-color: grey;
 	color: white;
-	border: 2px solid black;
+	border: 7px inset black;
 }
 
 .button-box {
