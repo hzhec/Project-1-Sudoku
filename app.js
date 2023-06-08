@@ -97,3 +97,11 @@ const newGame = document.querySelector(".new-game");
 newGame.addEventListener("click", () => {
 	generateSudoku();
 });
+
+const submitGame = document.querySelector(".submit");
+submitGame.addEventListener("click", () => {
+	const squares = document.querySelectorAll(".square");
+	const array = [];
+	squares.forEach((element) => array.push(element.innerText));
+	console.log(array);
+});
