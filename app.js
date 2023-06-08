@@ -1,11 +1,11 @@
 let selectedNum = "";
 let loadedBoard = [];
-// let completedBoard = [
-// 	3, 7, 8, 4, 1, 5, 2, 6, 9, 5, 6, 1, 9, 2, 8, 4, 7, 3, 4, 2, 9, 7, 6, 3, 5, 8,
-// 	1, 7, 4, 5, 3, 9, 6, 8, 1, 2, 8, 3, 2, 1, 5, 7, 6, 9, 4, 1, 9, 6, 2, 8, 4, 3,
-// 	5, 7, 9, 8, 4, 6, 7, 2, 1, 3, 5, 2, 5, 7, 8, 3, 1, 9, 4, 6, 6, 1, 3, 5, 4, 9,
-// 	7, 2, 8,
-// ];
+let completedBoard = [
+	3, 7, 8, 4, 1, 5, 2, 6, 9, 5, 6, 1, 9, 2, 8, 4, 7, 3, 4, 2, 9, 7, 6, 3, 5, 8,
+	1, 7, 4, 5, 3, 9, 6, 8, 1, 2, 8, 3, 2, 1, 5, 7, 6, 9, 4, 1, 9, 6, 2, 8, 4, 3,
+	5, 7, 9, 8, 4, 6, 7, 2, 1, 3, 5, 2, 5, 7, 8, 3, 1, 9, 4, 6, 6, 1, 3, 5, 4, 9,
+	7, 2, 8,
+];
 
 // Taking reference from https://lisperator.net/blog/javascript-sudoku-solver/
 // Convert index of a value in an array to row and column
@@ -62,12 +62,17 @@ const solve = (array) => {
 	const squares = document.querySelectorAll(".square");
 	for (let i = 0; i < 81; i++) {
 		let value = array[i];
-		if (checkDuplicates(array, i, value)) {
-			if (squares[i].classList.contains("active")) {
-				squares[i].classList.add("passed");
+		if (value !== "") {
+			if (checkDuplicates(array, i, value)) {
+				if (squares[i].classList.contains("active")) {
+					squares[i].classList.add("passed");
+				}
+			} else if (squares[i].classList.contains("active")) {
+				if (squares[i].classList.contains("passed")) {
+					squares[i].classList.remove("passed");
+				}
+				squares[i].innerText = "";
 			}
-		} else if (squares[i].classList.contains("active")) {
-			squares[i].innerText = "";
 		}
 	}
 };
@@ -201,14 +206,21 @@ submitGame.addEventListener("click", () => {
 	squares.forEach((element) => {
 		array.push(element.innerText);
 	});
-	if (array.includes("")) {
-		alert("Please complete!");
-	} else {
-		solve(array);
-	}
+	solve(array);
 });
 
 const resetBoard = document.querySelector(".reset-btn");
 resetBoard.addEventListener("click", () => {
 	generateSudoku(loadedBoard);
+});
+
+const completeBoard = document.querySelector(".complete-btn");
+completeBoard.addEventListener("click", () => {
+	const squares = document.querySelectorAll(".square");
+	for (let i = 0; i < 81; i++) {
+		if (squares[i].innerText === "") {
+			// console.log(squares[i].innerText);
+			squares[i].innerText = completedBoard[i];
+		}
+	}
 });
