@@ -3,7 +3,8 @@
 <h2>About</h2>
 
 
-<p> Sudoku is a logic-based, combinatorial number-placement puizzle. Its objective is to fill a 9x9 grid with numbers so that each column/row/subgrid (3x3 box) contain all of the numbers from 1 to 9.</p>
+<p>Sudoku is a logic-based, combinatorial number-placement puzzle.</p> 
+<p>Its objective is to fill a 9x9 grid with numbers so that each column/row/subgrid (3x3 box) contain all of the numbers from 1 to 9.</p>
 
 <img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/6b4ba028-666e-41fd-9eb9-01a2a362b401" width="500">
 
