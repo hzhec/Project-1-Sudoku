@@ -6,6 +6,43 @@ let completedBoard = [
 	5, 7, 9, 8, 4, 6, 7, 2, 1, 3, 5, 2, 5, 7, 8, 3, 1, 9, 4, 6, 6, 1, 3, 5, 4, 9,
 	7, 2, 8,
 ];
+let minute = 0;
+let second = 0;
+let myTimer;
+
+const timer = () => {
+	if ((second += 1) == 60) {
+		second = 0;
+		minute++;
+	}
+	if (minute == 60) {
+		minute = 0;
+		hour++;
+	}
+	document.querySelector("#minute").innerText = returnData(minute);
+	document.querySelector("#second").innerText = returnData(second);
+};
+
+const returnData = (input) => {
+	return input > 10 ? input : `0${input}`;
+};
+
+const timeStart = () => {
+	myTimer = setInterval(() => {
+		timer();
+	}, 1000);
+};
+
+const timePause = () => {
+	clearInterval(myTimer);
+};
+
+const timeReset = () => {
+	minute = 0;
+	second = 0;
+	document.querySelector("#minute").innerText = "00";
+	document.querySelector("#second").innerText = "00";
+};
 
 // Taking reference from https://lisperator.net/blog/javascript-sudoku-solver/
 // Convert index of a value in an array to row and column
@@ -60,6 +97,7 @@ const checkDuplicates = (array, index, value) => {
 
 const solve = (array) => {
 	const squares = document.querySelectorAll(".square");
+	let completeStatus = true;
 	for (let i = 0; i < 81; i++) {
 		let value = array[i];
 		if (value !== "") {
@@ -72,9 +110,13 @@ const solve = (array) => {
 					squares[i].classList.remove("passed");
 				}
 				squares[i].innerText = "";
+				completeStatus = false;
 			}
+		} else {
+			completeStatus = false;
 		}
 	}
+	return completeStatus;
 };
 
 // Create a 9x9 board
@@ -194,9 +236,14 @@ const generateSudoku = (array) => {
 
 const newGame = document.querySelector(".new-game");
 newGame.addEventListener("click", () => {
+	timePause();
+	timeReset();
+	document.querySelector(".pause-time").disabled = false;
+	document.querySelector(".game-box").style.display = "grid";
 	document.querySelector(".text-box").style.display = "flex";
 	document.querySelector(".number-box").style.display = "flex";
 	generateSudoku(randomBoard());
+	timeStart();
 });
 
 const submitGame = document.querySelector(".submit");
@@ -206,11 +253,15 @@ submitGame.addEventListener("click", () => {
 	squares.forEach((element) => {
 		array.push(element.innerText);
 	});
-	solve(array);
+	if (solve(array)) {
+		timePause();
+	}
 });
 
 const resetBoard = document.querySelector(".reset-btn");
 resetBoard.addEventListener("click", () => {
+	timePause();
+	timeStart();
 	generateSudoku(loadedBoard);
 });
 
@@ -223,4 +274,22 @@ completeBoard.addEventListener("click", () => {
 			squares[i].innerText = completedBoard[i];
 		}
 	}
+});
+
+document.querySelector(".start-time").addEventListener("click", () => {
+	timeStart();
+	document.querySelector(".game-box").style.display = "grid";
+	document.querySelector(".number-box").style.display = "flex";
+	document.querySelector(".text-box").style.display = "flex";
+	document.querySelector(".pause-time").disabled = false;
+	document.querySelector(".start-time").disabled = true;
+});
+
+document.querySelector(".pause-time").addEventListener("click", () => {
+	timePause();
+	document.querySelector(".game-box").style.display = "none";
+	document.querySelector(".number-box").style.display = "none";
+	document.querySelector(".text-box").style.display = "none";
+	document.querySelector(".pause-time").disabled = true;
+	document.querySelector(".start-time").disabled = false;
 });

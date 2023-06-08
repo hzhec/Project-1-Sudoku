@@ -26,6 +26,23 @@ header {
 	text-shadow: 4px 3px 6px rgb(120, 120, 120);
 }
 
+.timer {
+	display: flex;
+	align-items: center;
+}
+
+.timer-countup {
+	margin: 15px;
+	font-size: 20px;
+}
+
+.timer button {
+	width: 55px;
+	height: 25px;
+	text-align: center;
+	margin: 3px;
+}
+
 .game-box {
 	width: 600px;
 	height: 600px;
