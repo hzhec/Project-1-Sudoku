@@ -39,7 +39,7 @@
 <h2>Screenshots</h2>
 
 
-<img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/5ca2b454-9f88-44a2-9636-1be52faf2452" width="450">
-<img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/d65f9b57-8976-40df-b1b3-84c644376348" width="450">
-<img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/5c816f1a-ea6f-41d0-8fce-bead732745f7" width="450">
-<img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/18e5c029-f156-4a11-b543-91ab8649ec63" width="450">
+<img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/5ca2b454-9f88-44a2-9636-1be52faf2452" width="400">
+<img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/d65f9b57-8976-40df-b1b3-84c644376348" width="400">
+<img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/5c816f1a-ea6f-41d0-8fce-bead732745f7" width="400">
+<img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/18e5c029-f156-4a11-b543-91ab8649ec63" width="400">
