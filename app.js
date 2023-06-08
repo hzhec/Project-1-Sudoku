@@ -68,6 +68,7 @@ const generateSudoku = () => {
 	);
 	for (let i = 0; i < 81; i++) {
 		let num = sudokuBoard[randomIndex][i];
+		squares[i].innerText = "";
 		if (num !== 0) {
 			squares[i].innerText = num;
 		}
@@ -75,3 +76,8 @@ const generateSudoku = () => {
 };
 
 generateSudoku();
+
+const newGame = document.querySelector(".new-game");
+newGame.addEventListener("click", () => {
+	generateSudoku();
+});
