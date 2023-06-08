@@ -126,5 +126,5 @@ submitGame.addEventListener("click", () => {
 
 const resetBoard = document.querySelector(".reset-btn");
 resetBoard.addEventListener("click", () => {
-	console.log(loadedBoard);
+	generateSudoku(loadedBoard);
 });
