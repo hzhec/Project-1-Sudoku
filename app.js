@@ -1,5 +1,11 @@
 let selectedNum = "";
 let loadedBoard = [];
+// let completedBoard = [
+// 	3, 7, 8, 4, 1, 5, 2, 6, 9, 5, 6, 1, 9, 2, 8, 4, 7, 3, 4, 2, 9, 7, 6, 3, 5, 8,
+// 	1, 7, 4, 5, 3, 9, 6, 8, 1, 2, 8, 3, 2, 1, 5, 7, 6, 9, 4, 1, 9, 6, 2, 8, 4, 3,
+// 	5, 7, 9, 8, 4, 6, 7, 2, 1, 3, 5, 2, 5, 7, 8, 3, 1, 9, 4, 6, 6, 1, 3, 5, 4, 9,
+// 	7, 2, 8,
+// ];
 
 // Taking reference from https://lisperator.net/blog/javascript-sudoku-solver/
 // Convert index of a value in an array to row and column
@@ -14,18 +20,24 @@ const rowColToIndex = (row, col) => {
 
 const checkDuplicates = (array, index, value) => {
 	let valuePosition = indexToRowCol(index);
+	// console.log(valuePosition);
+	let valueToString = value.toString();
 
 	// Check if the number duplicated in the same row
 	for (let col = 0; col < 9; col++) {
-		if (array[rowColToIndex(valuePosition.row, col)] === value) {
-			return true;
+		if (valuePosition.col !== col) {
+			if (array[rowColToIndex(valuePosition.row, col)] === valueToString) {
+				return false;
+			}
 		}
 	}
 
 	// Check if the number duplicated in the same col
 	for (let row = 0; row < 9; row++) {
-		if (array[rowColToIndex(row, valuePosition.col)] === value) {
-			return true;
+		if (valuePosition.row !== row) {
+			if (array[rowColToIndex(row, valuePosition.col)] === valueToString) {
+				return false;
+			}
 		}
 	}
 
@@ -34,14 +46,30 @@ const checkDuplicates = (array, index, value) => {
 	let boxCol = Math.floor(valuePosition.col / 3) * 3;
 	for (let row = boxRow; row < boxRow + 3; row++) {
 		for (let col = boxCol; col < boxCol + 3; col++) {
-			if (array[rowColToIndex(row, col)] === value) {
-				return true;
+			if (valuePosition.row !== row && valuePosition.col !== col) {
+				if (array[rowColToIndex(row, col)] === valueToString) {
+					return false;
+				}
 			}
 		}
 	}
 
-	// If no duplicates found, return false.
-	return false;
+	// If no duplicates found, return true.
+	return true;
+};
+
+const solve = (array) => {
+	const squares = document.querySelectorAll(".square");
+	for (let i = 0; i < 81; i++) {
+		let value = array[i];
+		if (checkDuplicates(array, i, value)) {
+			if (squares[i].classList.contains("active")) {
+				squares[i].classList.add("passed");
+			}
+		} else if (squares[i].classList.contains("active")) {
+			squares[i].innerText = "";
+		}
+	}
 };
 
 // Create a 9x9 board
@@ -142,6 +170,9 @@ const generateSudoku = (array) => {
 	for (let i = 0; i < 81; i++) {
 		let num = array[i];
 		squares[i].innerText = "";
+		if (squares[i].classList.contains("passed")) {
+			squares[i].classList.remove("passed");
+		}
 		if (num !== 0) {
 			if (squares[i].classList.contains("active")) {
 				squares[i].classList.remove("active");
@@ -167,8 +198,14 @@ const submitGame = document.querySelector(".submit");
 submitGame.addEventListener("click", () => {
 	const squares = document.querySelectorAll(".square");
 	const array = [];
-	squares.forEach((element) => array.push(element.innerText));
-	console.log(array);
+	squares.forEach((element) => {
+		array.push(element.innerText);
+	});
+	if (array.includes("")) {
+		alert("Please complete!");
+	} else {
+		solve(array);
+	}
 });
 
 const resetBoard = document.querySelector(".reset-btn");
