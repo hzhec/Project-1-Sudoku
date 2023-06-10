@@ -236,6 +236,8 @@ const generateSudoku = (array) => {
 		} else {
 			squares[i].classList.add("active");
 			squares[i].addEventListener("click", (event) => {
+				// if (checkDuplicates(array, i, selectedNum)) {
+				// }
 				event.currentTarget.innerText = selectedNum;
 			});
 		}
@@ -250,6 +252,10 @@ newGame.addEventListener("click", () => {
 	document.querySelector(".game-box").style.display = "grid";
 	document.querySelector(".text-box").style.display = "flex";
 	document.querySelector(".number-box").style.display = "flex";
+	document.querySelector(".start-time").disabled = true;
+	document.querySelector(".submit-btn").disabled = false;
+	document.querySelector(".reset-btn").disabled = false;
+	document.querySelector(".complete-btn").disabled = false;
 	generateSudoku(randomBoard());
 	timeStart();
 });
@@ -263,6 +269,9 @@ submitGame.addEventListener("click", () => {
 	});
 	if (solve(array)) {
 		timePause();
+		document.querySelector(".pause-time").disabled = true;
+		document.querySelector(".start-time").disabled = true;
+		document.querySelector(".reset-btn").disabled = true;
 	}
 });
 
@@ -284,20 +293,28 @@ completeBoard.addEventListener("click", () => {
 	}
 });
 
-document.querySelector(".start-time").addEventListener("click", () => {
+const startTime = document.querySelector(".start-time");
+startTime.addEventListener("click", () => {
 	timeStart();
 	document.querySelector(".game-box").style.display = "grid";
 	document.querySelector(".number-box").style.display = "flex";
 	document.querySelector(".text-box").style.display = "flex";
 	document.querySelector(".pause-time").disabled = false;
 	document.querySelector(".start-time").disabled = true;
+	document.querySelector(".submit-btn").disabled = false;
+	document.querySelector(".reset-btn").disabled = false;
+	document.querySelector(".complete-btn").disabled = false;
 });
 
-document.querySelector(".pause-time").addEventListener("click", () => {
+const pauseTime = document.querySelector(".pause-time");
+pauseTime.addEventListener("click", () => {
 	timePause();
 	document.querySelector(".game-box").style.display = "none";
 	document.querySelector(".number-box").style.display = "none";
 	document.querySelector(".text-box").style.display = "none";
 	document.querySelector(".pause-time").disabled = true;
 	document.querySelector(".start-time").disabled = false;
+	document.querySelector(".submit-btn").disabled = true;
+	document.querySelector(".reset-btn").disabled = true;
+	document.querySelector(".complete-btn").disabled = true;
 });
