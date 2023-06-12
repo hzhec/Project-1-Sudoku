@@ -128,7 +128,7 @@ function drop(event) {
 
 	// Append the dropped element to the droppable element
 	const draggableElement = document.getElementById(data);
-	console.log(draggableElement);
+	// console.log(draggableElement);
 	if (event.target.classList.contains("active")) {
 		event.target.innerText = draggableElement.id;
 		event.target.classList.remove("hover");
