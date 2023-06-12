@@ -38,12 +38,7 @@ let minute = 0;
 let second = 0;
 let myTimer;
 let parsedDetails = [];
-
-if (localStorage.length === 0) {
-	localStorage.setItem("Rank", "[]");
-} else {
-	parsedDetails = JSON.parse(localStorage.getItem("Rank"));
-}
+let compareArray = [];
 
 const movesBox = document.querySelector(".moves-box");
 const numSelector = document.querySelectorAll(".number-selector");
@@ -70,6 +65,15 @@ resetBtn.disabled = true;
 completeBtn.disabled = true;
 gameBox.style.display = "none";
 timerBox.style.display = "none";
+
+////////////////////
+/// LocalStorage ///
+////////////////////
+if (localStorage.length === 0) {
+	localStorage.setItem("Rank", "[]");
+} else {
+	parsedDetails = JSON.parse(localStorage.getItem("Rank"));
+}
 
 // Function to load scoreboard from localStorage
 const updateScoreBoard = () => {
@@ -167,6 +171,29 @@ function drop(event) {
 	if (event.target.classList.contains("active")) {
 		event.target.innerText = draggableElement.id;
 		event.target.classList.remove("hover");
+		let squareRow = parseInt(event.target.getAttribute("row"));
+		let squareCol = parseInt(event.target.getAttribute("col"));
+		let squareIndex = rowColToIndex(squareRow, squareCol);
+		compareArray[squareIndex] = parseInt(draggableElement.id);
+		// if (
+		// 	!checkDuplicates(
+		// 		compareArray,
+		// 		parseInt(squareIndex),
+		// 		parseInt(draggableElement.id)
+		// 	)
+		// ) {
+		// 	event.target.classList.add("duplicate");
+		// } else {
+		// 	event.target.classList.remove("duplicate");
+		// }
+		event.target.classList.toggle(
+			"duplicate",
+			!checkDuplicates(
+				compareArray,
+				parseInt(squareIndex),
+				parseInt(draggableElement.id)
+			)
+		);
 	}
 }
 
@@ -194,12 +221,11 @@ const rowColToIndex = (row, col) => {
 const checkDuplicates = (array, index, value) => {
 	let valuePosition = indexToRowCol(index);
 	// console.log(valuePosition);
-	let valueToString = value.toString();
 
 	// Check if the number duplicated in the same row
 	for (let col = 0; col < 9; col++) {
 		if (valuePosition.col !== col) {
-			if (array[rowColToIndex(valuePosition.row, col)] === valueToString) {
+			if (array[rowColToIndex(valuePosition.row, col)] === value) {
 				return false;
 			}
 		}
@@ -208,7 +234,7 @@ const checkDuplicates = (array, index, value) => {
 	// Check if the number duplicated in the same col
 	for (let row = 0; row < 9; row++) {
 		if (valuePosition.row !== row) {
-			if (array[rowColToIndex(row, valuePosition.col)] === valueToString) {
+			if (array[rowColToIndex(row, valuePosition.col)] === value) {
 				return false;
 			}
 		}
@@ -220,7 +246,7 @@ const checkDuplicates = (array, index, value) => {
 	for (let row = boxRow; row < boxRow + 3; row++) {
 		for (let col = boxCol; col < boxCol + 3; col++) {
 			if (valuePosition.row !== row && valuePosition.col !== col) {
-				if (array[rowColToIndex(row, col)] === valueToString) {
+				if (array[rowColToIndex(row, col)] === value) {
 					return false;
 				}
 			}
@@ -267,6 +293,7 @@ const randomBoard = () => {
 	boardIndex = randomIndex;
 	// Clone array to loadedPuzzle
 	completedPuzzle = [...completedBoard[boardIndex]];
+	compareArray = [...sudokuBoard[boardIndex]];
 	return (loadedPuzzle = [...sudokuBoard[boardIndex]]);
 };
 
@@ -322,10 +349,10 @@ const generateSudoku = (array) => {
 		} else {
 			squares[i].classList.add("active");
 			squares[i].addEventListener("click", (event) => {
+				let squareRow = parseInt(event.target.getAttribute("row"));
+				let squareCol = parseInt(event.target.getAttribute("col"));
+				let squareIndex = rowColToIndex(squareRow, squareCol);
 				if (hintStatus) {
-					let squareRow = parseInt(event.target.getAttribute("row"));
-					let squareCol = parseInt(event.target.getAttribute("col"));
-					let squareIndex = rowColToIndex(squareRow, squareCol);
 					// console.log(completedPuzzle[squareIndex]);
 					selectedSquare = completedPuzzle[squareIndex];
 					numOfHint--;
@@ -335,6 +362,14 @@ const generateSudoku = (array) => {
 					}
 					activeBtn.classList.remove("selected");
 					hintStatus = false;
+				}
+				if (selectedSquare !== "") {
+					compareArray[squareIndex] = parseInt(selectedSquare);
+				} else {
+					compareArray[squareIndex] = 0;
+					if (event.target.classList.contains("duplicate")) {
+						event.target.classList.remove("duplicate");
+					}
 				}
 				event.target.innerText = selectedSquare;
 				toggleButton(event);
@@ -435,7 +470,7 @@ submitBtn.addEventListener("click", () => {
 	const squares = document.querySelectorAll(".square");
 	const array = [];
 	squares.forEach((element) => {
-		array.push(element.innerText);
+		array.push(parseInt(element.innerText));
 	});
 	if (solve(array)) {
 		timePause();

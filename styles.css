@@ -146,8 +146,12 @@ input {
 }
 
 .passed {
-	background-color: rgb(226, 250, 226);
-	color: rgb(48, 79, 48);
+	color: rgb(21, 181, 21);
+}
+
+.duplicate {
+	color: red;
+	background-color: rgb(255, 215, 215);
 }
 
 .text-box {
