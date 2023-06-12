@@ -11,6 +11,27 @@
 	<body>
 		<div class="container">
 			<header>SUDOKU</header>
+			<div class="scoreboard">
+				<h2>Scoreboard</h2>
+				<table>
+					<tr>
+						<th>Rank</th>
+						<th>Name</th>
+						<th>Time</th>
+					</tr>
+				</table>
+			</div>
+			<form class="input">
+				<div class="alert" style="display: none">
+					<strong>Please input your name!</strong>
+					<span
+						class="closebtn"
+						onclick="this.parentElement.style.display='none';"
+						>&times;</span
+					>
+				</div>
+				<input type="text" placeholder="Name" id="input-name" />
+			</form>
 			<div class="timer">
 				<div class="timer-countup">
 					Time: <span id="minute">00</span>:<span id="second">00</span>

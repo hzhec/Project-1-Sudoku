@@ -26,6 +26,69 @@ header {
 	text-shadow: 4px 3px 6px rgb(120, 120, 120);
 }
 
+.scoreboard {
+	width: 50%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.scoreboard h2 {
+	margin: 5px auto;
+}
+
+table {
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+table th {
+	background-color: #c9ebff;
+	font-weight: bold;
+}
+
+table tr:nth-child(odd) {
+	background-color: #eef9ff;
+}
+
+table,
+tr,
+td,
+th {
+	text-align: center;
+	border: 1px solid black;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+}
+
+.alert {
+	padding: 10px;
+	background-color: #f44336;
+	color: white;
+	margin: 5px;
+}
+
+.closebtn {
+	margin-left: 10px;
+	color: white;
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 20px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+.closebtn:hover {
+	color: black;
+}
+
+input {
+	width: 100%;
+}
+
 .timer {
 	display: flex;
 	align-items: center;

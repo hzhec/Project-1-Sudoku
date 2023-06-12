@@ -37,6 +37,13 @@ let numOfHint = 3;
 let minute = 0;
 let second = 0;
 let myTimer;
+let parsedDetails = [];
+
+if (localStorage.length === 0) {
+	localStorage.setItem("Rank", "[]");
+} else {
+	parsedDetails = JSON.parse(localStorage.getItem("Rank"));
+}
 
 const movesBox = document.querySelector(".moves-box");
 const numSelector = document.querySelectorAll(".number-selector");
@@ -52,11 +59,39 @@ const resetBtn = document.querySelector(".reset-btn");
 const completeBtn = document.querySelector(".complete-btn");
 const startTime = document.querySelector(".start-time");
 const pauseTime = document.querySelector(".pause-time");
+const inputName = document.querySelector("#input-name");
+const tableDetails = document.querySelector("tbody");
+const timerBox = document.querySelector(".timer");
+const alertMessage = document.querySelector(".alert");
 
 // Initial condition of the buttons when page loaded
 submitBtn.disabled = true;
 resetBtn.disabled = true;
 completeBtn.disabled = true;
+gameBox.style.display = "none";
+timerBox.style.display = "none";
+
+// Function to load scoreboard from localStorage
+const updateScoreBoard = () => {
+	const rankDetails = JSON.parse(localStorage.getItem("Rank"));
+	rankDetails.sort((a, b) => (a.time > b.time ? 1 : a.time < b.time ? -1 : 0));
+	for (let i = 0; i < rankDetails.length; i++) {
+		const tr = document.createElement("tr");
+		tr.classList.add("result");
+		const tdRank = document.createElement("td");
+		tdRank.innerText = i + 1;
+		tr.appendChild(tdRank);
+		tableDetails.appendChild(tr);
+		Object.values(rankDetails[i]).forEach((value) => {
+			const td = document.createElement("td");
+			td.innerText = value;
+			tr.appendChild(td);
+			tableDetails.appendChild(tr);
+		});
+	}
+};
+
+updateScoreBoard();
 
 /////////////
 /// Timer ///
@@ -72,7 +107,7 @@ const timer = () => {
 };
 
 const returnData = (input) => {
-	return input > 10 ? input : `0${input}`;
+	return input > 9 ? input : `0${input}`;
 };
 
 const timeStart = () => {
@@ -365,27 +400,34 @@ hintBtn.addEventListener("click", (event) => {
 
 // Add event listener to newGameBtn to load new sudoku puzzle board
 newGameBtn.addEventListener("click", () => {
-	timePause();
-	timeReset();
-	numOfHint = 3;
-	hintBtn.innerText = `Hint: ${numOfHint}`;
-	hintBtn.disabled = false;
-	hintStatus = false;
-	if (activeBtn !== null) {
-		activeBtn.classList.remove("selected");
-	}
+	if (inputName.value.trim() !== "") {
+		inputName.disabled = true;
 
-	gameBox.style.display = "grid";
-	textBox.style.display = "flex";
-	messageBox.innerText = "Please select a number";
-	movesBox.style.display = "flex";
-	pauseTime.disabled = false;
-	startTime.disabled = true;
-	submitBtn.disabled = false;
-	resetBtn.disabled = false;
-	completeBtn.disabled = false;
-	generateSudoku(randomBoard());
-	timeStart();
+		timePause();
+		timeReset();
+		numOfHint = 3;
+		hintBtn.innerText = `Hint: ${numOfHint}`;
+		hintBtn.disabled = false;
+		hintStatus = false;
+		if (activeBtn !== null) {
+			activeBtn.classList.remove("selected");
+		}
+		alertMessage.style.display = "none";
+		timerBox.style.display = "flex";
+		gameBox.style.display = "grid";
+		textBox.style.display = "flex";
+		messageBox.innerText = "Please select a number";
+		movesBox.style.display = "flex";
+		pauseTime.disabled = false;
+		startTime.disabled = true;
+		submitBtn.disabled = false;
+		resetBtn.disabled = false;
+		completeBtn.disabled = false;
+		generateSudoku(randomBoard());
+		timeStart();
+	} else {
+		alertMessage.style.display = "flex";
+	}
 });
 
 // Add event listener to submitBtn to check and solve puzzle
@@ -398,12 +440,26 @@ submitBtn.addEventListener("click", () => {
 	if (solve(array)) {
 		timePause();
 		messageBox.innerText = "Puzzle Completed!";
+		let updateMinute = returnData(minute);
+		let updateSecond = returnData(second);
+		const playerDetail = {
+			name: inputName.value,
+			time: `${updateMinute}:${updateSecond}`,
+		};
+		parsedDetails.push(playerDetail);
+		localStorage.setItem("Rank", JSON.stringify(parsedDetails));
+		document.querySelectorAll(".result").forEach((element) => {
+			element.parentNode.removeChild(element);
+		});
+		updateScoreBoard();
 		movesBox.style.display = "none";
 		pauseTime.disabled = true;
 		startTime.disabled = true;
 		resetBtn.disabled = true;
 		completeBtn.disabled = true;
 		submitBtn.disabled = true;
+		inputName.value = "";
+		inputName.disabled = false;
 	}
 });
 
