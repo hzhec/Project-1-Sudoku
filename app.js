@@ -352,6 +352,9 @@ const generateSudoku = (array) => {
 				let squareRow = parseInt(event.target.getAttribute("row"));
 				let squareCol = parseInt(event.target.getAttribute("col"));
 				let squareIndex = rowColToIndex(squareRow, squareCol);
+				if (event.target.classList.contains("duplicate")) {
+					event.target.classList.remove("duplicate");
+				}
 				if (hintStatus) {
 					// console.log(completedPuzzle[squareIndex]);
 					selectedSquare = completedPuzzle[squareIndex];
@@ -367,9 +370,6 @@ const generateSudoku = (array) => {
 					compareArray[squareIndex] = parseInt(selectedSquare);
 				} else {
 					compareArray[squareIndex] = 0;
-					if (event.target.classList.contains("duplicate")) {
-						event.target.classList.remove("duplicate");
-					}
 				}
 				event.target.innerText = selectedSquare;
 				toggleButton(event);
