@@ -74,8 +74,12 @@ header {
 	font-weight: bold;
 }
 
-.active:hover {
+.active:hover,
+.active.hover {
 	background-color: lightgoldenrodyellow;
+	transform: scale(1.15);
+	border: 2px solid black;
+	box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.215);
 }
 
 .passed {
@@ -108,6 +112,7 @@ header {
 .moves-box {
 	display: none;
 	flex-direction: column;
+	width: 90%;
 }
 
 .number-box,
@@ -143,23 +148,43 @@ header {
 	width: 200px;
 	height: 30px;
 }
-
-.number-box .selected {
+/* 
+.number-selector.selected {
 	background-color: lightgoldenrodyellow;
 	color: black;
 	border: 5px inset rgb(169, 169, 169);
 }
 
-.number-box button:hover {
+.number-selector:hover {
 	background-color: lightgoldenrodyellow;
 	color: black;
 	border: 4px outset rgb(169, 169, 169);
 }
 
-.number-box button:focus {
+.number-selector:focus {
 	background-color: lightgoldenrodyellow;
 	color: black;
 	border: 5px inset rgb(169, 169, 169);
+} */
+
+.num-select {
+	background-color: white;
+	width: 60px;
+	height: 60px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 60px;
+	font-size: 30px;
+	font-weight: bold;
+	border: 2px solid black;
+	border-radius: 6px;
+	margin: 10px 20px;
+}
+
+.num-select:hover {
+	background-color: lightgoldenrodyellow;
+	box-shadow: 3px 4px 7px rgb(173, 173, 173);
+	transform: scale(1.25);
 }
 
 .action-box button:focus {

@@ -38,7 +38,12 @@ let minute = 0;
 let second = 0;
 let myTimer;
 
-const numberBox = document.querySelectorAll(".number-selector");
+const movesBox = document.querySelector(".moves-box");
+const numSelector = document.querySelectorAll(".number-selector");
+const numBox = document.querySelector(".number-box");
+const gameBox = document.querySelector(".game-box");
+const messageBox = document.querySelector(".message-box");
+const textBox = document.querySelector(".text-box");
 const clearBtn = document.querySelector(".clear-selector");
 const hintBtn = document.querySelector(".hint-selector");
 const newGameBtn = document.querySelector(".new-game");
@@ -86,6 +91,55 @@ const timeReset = () => {
 	document.querySelector("#minute").innerText = "00";
 	document.querySelector("#second").innerText = "00";
 };
+/////////////////////////////////
+/// Add Drag & Drop Functions ///
+/////////////////////////////////
+// Drag start event handler
+const dragStart = (event) => {
+	// Set the data being dragged
+	event.dataTransfer.setData("text", event.target.id);
+	toggleButton(event);
+};
+
+// Drag over event handler
+const dragOver = (event) => {
+	// Prevent the default behaviour
+	event.preventDefault();
+};
+
+const dragEnter = (event) => {
+	event.preventDefault();
+	if (event.target.classList.contains("active")) {
+		event.target.classList.add("hover");
+	}
+};
+
+const dragLeave = (event) => {
+	event.target.classList.remove("hover");
+};
+
+// Drop event handler
+function drop(event) {
+	// Prevent the default behavior
+	event.preventDefault();
+
+	// Get the data being dropped
+	const data = event.dataTransfer.getData("text");
+
+	// Append the dropped element to the droppable element
+	const draggableElement = document.getElementById(data);
+	console.log(draggableElement);
+	if (event.target.classList.contains("active")) {
+		event.target.innerText = draggableElement.id;
+		event.target.classList.remove("hover");
+	}
+}
+
+numBox.addEventListener("dragstart", dragStart);
+gameBox.addEventListener("dragover", dragOver);
+gameBox.addEventListener("dragenter", dragEnter);
+gameBox.addEventListener("dragleave", dragLeave);
+gameBox.addEventListener("drop", drop);
 
 ////////////////////////////
 /// Check & Solve Puzzle ///
@@ -212,7 +266,7 @@ for (let i = 0; i < 81; i++) {
 		square.classList.add("even-box");
 	}
 
-	document.querySelector(".game-box").appendChild(square);
+	gameBox.appendChild(square);
 }
 
 // Function to generate the sudoku board and add event listener
@@ -248,6 +302,8 @@ const generateSudoku = (array) => {
 					hintStatus = false;
 				}
 				event.target.innerText = selectedSquare;
+				toggleButton(event);
+				messageBox.innerText = `Please select a number`;
 			});
 		}
 	}
@@ -273,28 +329,27 @@ const toggleButton = (event) => {
 /// Add event listeners to all buttons ///
 //////////////////////////////////////////
 // Add event listener to number 1 - 9 for input purpose
-numberBox.forEach((element) =>
-	element.addEventListener("click", (event) => {
-		const messageBox = document.querySelector(".message-box");
-		let input = event.target.innerText;
+// numSelector.forEach((element) =>
+// 	element.addEventListener("click", (event) => {
+// 		const messageBox = document.querySelector(".message-box");
+// 		let input = event.target.innerText;
 
-		// console.log(event.target);
-		// console.log(event.currentTarget);
+// 		// console.log(event.target);
+// 		// console.log(event.currentTarget);
 
-		messageBox.innerHTML = `Selected number:<br> <span>${input}</span>`;
-		selectedSquare = input;
+// 		messageBox.innerHTML = `Selected number:<br> <span>${input}</span>`;
+// 		selectedSquare = input;
 
-		// console.log(num); // string type
-		// console.log(typeof event.target.innerText);
+// 		// console.log(num); // string type
+// 		// console.log(typeof event.target.innerText);
 
-		toggleButton(event);
-		// console.log(activeBtn);)
-	})
-);
+// 		toggleButton(event);
+// 		// console.log(activeBtn);)
+// 	})
+// );
 
 // Add event listener to clear button to clear selected box
 clearBtn.addEventListener("click", (event) => {
-	const messageBox = document.querySelector(".message-box");
 	selectedSquare = "";
 	messageBox.innerText = `Select a box to clear the number`;
 	toggleButton(event);
@@ -302,7 +357,6 @@ clearBtn.addEventListener("click", (event) => {
 
 // Add event listener to hint button to provide answer for selected box
 hintBtn.addEventListener("click", (event) => {
-	const messageBox = document.querySelector(".message-box");
 	messageBox.innerText = `Select a box for hint`;
 	hintStatus = true;
 	// console.log(hintStatus);
@@ -321,10 +375,10 @@ newGameBtn.addEventListener("click", () => {
 		activeBtn.classList.remove("selected");
 	}
 
-	document.querySelector(".game-box").style.display = "grid";
-	document.querySelector(".text-box").style.display = "flex";
-	document.querySelector(".message-box").innerText = "Please select a number";
-	document.querySelector(".moves-box").style.display = "flex";
+	gameBox.style.display = "grid";
+	textBox.style.display = "flex";
+	messageBox.innerText = "Please select a number";
+	movesBox.style.display = "flex";
 	pauseTime.disabled = false;
 	startTime.disabled = true;
 	submitBtn.disabled = false;
@@ -343,8 +397,8 @@ submitBtn.addEventListener("click", () => {
 	});
 	if (solve(array)) {
 		timePause();
-		document.querySelector(".message-box").innerText = "Puzzle Completed!";
-		document.querySelector(".moves-box").style.display = "none";
+		messageBox.innerText = "Puzzle Completed!";
+		movesBox.style.display = "none";
 		pauseTime.disabled = true;
 		startTime.disabled = true;
 		resetBtn.disabled = true;
@@ -374,9 +428,9 @@ completeBtn.addEventListener("click", () => {
 // Add event listener to startTime button
 startTime.addEventListener("click", () => {
 	timeStart();
-	document.querySelector(".game-box").style.display = "grid";
-	document.querySelector(".moves-box").style.display = "flex";
-	document.querySelector(".text-box").style.display = "flex";
+	gameBox.style.display = "grid";
+	movesBox.style.display = "flex";
+	textBox.style.display = "flex";
 	pauseTime.disabled = false;
 	startTime.disabled = true;
 	submitBtn.disabled = false;
@@ -387,9 +441,9 @@ startTime.addEventListener("click", () => {
 // Add event listener to pauseTime button
 pauseTime.addEventListener("click", () => {
 	timePause();
-	document.querySelector(".game-box").style.display = "none";
-	document.querySelector(".moves-box").style.display = "none";
-	document.querySelector(".text-box").style.display = "none";
+	gameBox.style.display = "none";
+	movesBox.style.display = "none";
+	textBox.style.display = "none";
 	pauseTime.disabled = true;
 	startTime.disabled = false;
 	submitBtn.disabled = true;
