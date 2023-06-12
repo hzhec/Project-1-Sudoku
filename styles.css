@@ -62,11 +62,11 @@ header {
 }
 
 .odd-box {
-	background-color: rgb(240, 255, 255);
+	background-color: rgb(233, 255, 255);
 }
 
 .even-box {
-	background-color: rgb(246, 246, 246);
+	background-color: rgb(240, 240, 240);
 }
 
 .active {
@@ -105,8 +105,14 @@ header {
 	border: 1px solid rgb(161, 161, 161);
 }
 
-.number-box {
+.moves-box {
 	display: none;
+	flex-direction: column;
+}
+
+.number-box,
+.action-box {
+	display: flex;
 	width: 80%;
 	flex-direction: row;
 	justify-content: space-evenly;
@@ -114,7 +120,11 @@ header {
 	margin: 0px auto;
 }
 
-.number-selector {
+.action-box {
+	margin-top: 20px;
+}
+
+.moves-box button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -129,22 +139,39 @@ header {
 	background-color: white;
 }
 
-.selected {
-	background-color: lightgoldenrodyellow;
-	color: black;
-	border: 7px inset rgb(169, 169, 169);
+.action-box button {
+	width: 200px;
+	height: 30px;
 }
 
-.number-selector:hover {
+.number-box .selected {
 	background-color: lightgoldenrodyellow;
 	color: black;
-	border: 6px outset rgb(169, 169, 169);
+	border: 5px inset rgb(169, 169, 169);
 }
 
-.number-selector:focus {
+.number-box button:hover {
 	background-color: lightgoldenrodyellow;
 	color: black;
-	border: 7px inset rgb(169, 169, 169);
+	border: 4px outset rgb(169, 169, 169);
+}
+
+.number-box button:focus {
+	background-color: lightgoldenrodyellow;
+	color: black;
+	border: 5px inset rgb(169, 169, 169);
+}
+
+.action-box button:focus {
+	background-color: rgb(203, 243, 255);
+	color: black;
+	border: 3px inset rgb(137, 137, 137);
+}
+
+.action-box .selected {
+	background-color: rgb(203, 243, 255);
+	color: black;
+	border: 3px inset rgb(169, 169, 169);
 }
 
 .button-box {
@@ -152,12 +179,12 @@ header {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-content: space-evenly;
+	justify-content: space-around;
+	margin: 35px;
 }
 
 .button-box button {
-	width: 120px;
-	margin: 30px;
+	width: 130px;
 	padding: 5px;
 	font-size: 15px;
 	border-radius: 15px;
