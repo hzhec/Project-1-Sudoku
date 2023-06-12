@@ -346,7 +346,7 @@ const startTime = document.querySelector(".start-time");
 startTime.addEventListener("click", () => {
 	timeStart();
 	document.querySelector(".game-box").style.display = "grid";
-	document.querySelector(".number-box").style.display = "flex";
+	document.querySelector(".moves-box").style.display = "flex";
 	document.querySelector(".text-box").style.display = "flex";
 	document.querySelector(".pause-time").disabled = false;
 	document.querySelector(".start-time").disabled = true;
@@ -359,7 +359,7 @@ const pauseTime = document.querySelector(".pause-time");
 pauseTime.addEventListener("click", () => {
 	timePause();
 	document.querySelector(".game-box").style.display = "none";
-	document.querySelector(".number-box").style.display = "none";
+	document.querySelector(".moves-box").style.display = "none";
 	document.querySelector(".text-box").style.display = "none";
 	document.querySelector(".pause-time").disabled = true;
 	document.querySelector(".start-time").disabled = false;
