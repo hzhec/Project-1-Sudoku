@@ -221,12 +221,27 @@ const rowColToIndex = (row, col) => {
 const checkDuplicates = (array, index, value) => {
 	let valuePosition = indexToRowCol(index);
 	// console.log(valuePosition);
+	let dupPassed = true;
 
+	if (value === NaN) {
+		value = 0;
+	}
 	// Check if the number duplicated in the same row
 	for (let col = 0; col < 9; col++) {
 		if (valuePosition.col !== col) {
-			if (array[rowColToIndex(valuePosition.row, col)] === value) {
-				return false;
+			if (
+				array[rowColToIndex(valuePosition.row, col)] === value &&
+				value !== 0
+			) {
+				document
+					.querySelector(`[row="${valuePosition.row}"][col="${col}"]`)
+					.classList.add("duplicate");
+				dupPassed = false;
+				// return false;
+			} else {
+				document
+					.querySelector(`[row="${valuePosition.row}"][col="${col}"]`)
+					.classList.remove("duplicate");
 			}
 		}
 	}
@@ -234,8 +249,19 @@ const checkDuplicates = (array, index, value) => {
 	// Check if the number duplicated in the same col
 	for (let row = 0; row < 9; row++) {
 		if (valuePosition.row !== row) {
-			if (array[rowColToIndex(row, valuePosition.col)] === value) {
-				return false;
+			if (
+				array[rowColToIndex(row, valuePosition.col)] === value &&
+				value !== 0
+			) {
+				document
+					.querySelector(`[row="${row}"][col="${valuePosition.col}"]`)
+					.classList.add("duplicate");
+				dupPassed = false;
+				// return false;
+			} else {
+				document
+					.querySelector(`[row="${row}"][col="${valuePosition.col}"]`)
+					.classList.remove("duplicate");
 			}
 		}
 	}
@@ -246,15 +272,23 @@ const checkDuplicates = (array, index, value) => {
 	for (let row = boxRow; row < boxRow + 3; row++) {
 		for (let col = boxCol; col < boxCol + 3; col++) {
 			if (valuePosition.row !== row && valuePosition.col !== col) {
-				if (array[rowColToIndex(row, col)] === value) {
-					return false;
+				if (array[rowColToIndex(row, col)] === value && value !== 0) {
+					document
+						.querySelector(`[row="${row}"][col="${col}"]`)
+						.classList.add("duplicate");
+					dupPassed = false;
+					// return false;
+				} else {
+					document
+						.querySelector(`[row="${row}"][col="${col}"]`)
+						.classList.remove("duplicate");
 				}
 			}
 		}
 	}
 
 	// If no duplicates found, return true.
-	return true;
+	return dupPassed;
 };
 
 // Function to solve the sudoku puzzle
@@ -263,7 +297,7 @@ const solve = (array) => {
 	let completeStatus = true;
 	for (let i = 0; i < 81; i++) {
 		let value = array[i];
-		if (value !== "") {
+		if (value !== "" || value !== NaN) {
 			if (checkDuplicates(array, i, value)) {
 				if (squares[i].classList.contains("active")) {
 					squares[i].classList.add("passed");
@@ -352,9 +386,9 @@ const generateSudoku = (array) => {
 				let squareCol = parseInt(event.target.getAttribute("col"));
 				let squareIndex = rowColToIndex(squareRow, squareCol);
 				if (buttonStatus) {
-					if (event.target.classList.contains("duplicate")) {
-						event.target.classList.remove("duplicate");
-					}
+					// if (event.target.classList.contains("duplicate")) {
+					// 	event.target.classList.remove("duplicate");
+					// }
 					if (hintStatus) {
 						// console.log(completedPuzzle[squareIndex]);
 						selectedSquare = completedPuzzle[squareIndex];
@@ -371,6 +405,14 @@ const generateSudoku = (array) => {
 					} else {
 						loadedPuzzle[squareIndex] = 0;
 					}
+					event.target.classList.toggle(
+						"duplicate",
+						!checkDuplicates(
+							loadedPuzzle,
+							parseInt(squareIndex),
+							parseInt(selectedSquare)
+						)
+					);
 					event.target.innerText = selectedSquare;
 					toggleButton(event);
 					messageBox.innerText = `Please select a number`;
