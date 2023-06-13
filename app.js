@@ -587,6 +587,7 @@ resetBtn.addEventListener("click", () => {
 	timePause();
 	timeStart();
 	generateSudoku([...sudokuBoard[boardIndex]]);
+	loadedPuzzle = [...sudokuBoard[boardIndex]];
 });
 
 // Add event listener to completeBtn to load all answers
@@ -598,6 +599,7 @@ completeBtn.addEventListener("click", () => {
 			squares[i].innerText = completedBoard[boardIndex][i];
 		}
 	}
+	loadedPuzzle = [...completedBoard[boardIndex]];
 });
 
 // Add event listener to startTime button
