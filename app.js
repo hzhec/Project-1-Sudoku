@@ -67,7 +67,7 @@ completeBtn.disabled = true;
 gameBox.style.display = "none";
 timerBox.style.display = "none";
 
-const screenWidth = window.screen.width;
+const screenWidth = window.innerWidth;
 if (screenWidth < 750) {
 	let touchStatus = false;
 	const windowSizeChange = () => {
