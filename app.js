@@ -58,6 +58,7 @@ const inputName = document.querySelector("#input-name");
 const tableDetails = document.querySelector("tbody");
 const timerBox = document.querySelector(".timer");
 const alertMessage = document.querySelector(".alert");
+const alertLogin = document.querySelector(".alert-login");
 
 // Initial condition of the buttons when page loaded
 submitBtn.disabled = true;
@@ -592,14 +593,37 @@ resetBtn.addEventListener("click", () => {
 
 // Add event listener to completeBtn to load all answers
 completeBtn.addEventListener("click", () => {
-	const squares = document.querySelectorAll(".square");
-	for (let i = 0; i < 81; i++) {
-		if (squares[i].innerText === "") {
-			// console.log(squares[i].innerText);
-			squares[i].innerText = completedBoard[boardIndex][i];
+	const form = document.querySelector(".form");
+	form.style.display = "block";
+
+	const loginBtn = document.querySelector(".loginBtn");
+	const cancelBtn = document.querySelector(".cancelBtn");
+	const uName = document.querySelector("#uname");
+	const psw = document.querySelector("#psw");
+	loginBtn.addEventListener("click", () => {
+		if (uName.value === "admin" && psw.value === "123") {
+			const squares = document.querySelectorAll(".square");
+			for (let i = 0; i < 81; i++) {
+				if (squares[i].innerText === "") {
+					// console.log(squares[i].innerText);
+					squares[i].innerText = completedBoard[boardIndex][i];
+				}
+			}
+			loadedPuzzle = [...completedBoard[boardIndex]];
+			uName.value = "";
+			psw.value = "";
+			form.style.display = "none";
+			alertLogin.style.display = "none";
+		} else {
+			alertLogin.style.display = "flex";
 		}
-	}
-	loadedPuzzle = [...completedBoard[boardIndex]];
+	});
+	cancelBtn.addEventListener("click", () => {
+		uName.value = "";
+		psw.value = "";
+		form.style.display = "none";
+		alertLogin.style.display = "none";
+	});
 });
 
 // Add event listener to startTime button

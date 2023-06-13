@@ -84,6 +84,39 @@
 					<button class="complete-btn">Complete Board</button>
 				</div>
 			</div>
+			<div class="form" style="display: none">
+				<form>
+					<div class="form-container">
+						<label for="uname">Username</label>
+						<input
+							type="text"
+							placeholder="Enter username"
+							id="uname"
+							required
+						/>
+
+						<label for="psw">Password</label>
+						<input
+							type="password"
+							placeholder="Enter password"
+							id="psw"
+							required
+						/>
+					</div>
+					<div class="form-container">
+						<button type="button" class="loginBtn">Login</button>
+						<button type="button" class="cancelBtn">Cancel</button>
+					</div>
+					<div class="alert-login" style="display: none">
+						<strong>Please key in correct admin account!</strong>
+						<span
+							class="closebtn"
+							onclick="this.parentElement.style.display='none';"
+							>&times;</span
+						>
+					</div>
+				</form>
+			</div>
 		</div>
 	</body>
 </html>
