@@ -66,6 +66,40 @@ completeBtn.disabled = true;
 gameBox.style.display = "none";
 timerBox.style.display = "none";
 
+const screenWidth = window.screen.width;
+if (screenWidth < 750) {
+	let touchStatus = false;
+	const windowSizeChange = () => {
+		numBox.addEventListener("touchstart", (event) => {
+			selectedSquare = event.target.id;
+			messageBox.innerHTML = `Selected number: &nbsp;&nbsp;<span>${selectedSquare}</span>`;
+			touchStatus = true;
+			toggleButton(event);
+		});
+		gameBox.addEventListener("touchend", (event) => {
+			let squareRow = parseInt(event.target.getAttribute("row"));
+			let squareCol = parseInt(event.target.getAttribute("col"));
+			let squareIndex = rowColToIndex(squareRow, squareCol);
+			if (touchStatus) {
+				loadedPuzzle[squareIndex] = parseInt(selectedSquare);
+				event.target.classList.toggle(
+					"duplicate",
+					!checkDuplicates(
+						loadedPuzzle,
+						parseInt(squareIndex),
+						parseInt(selectedSquare)
+					)
+				);
+				event.target.innerText = selectedSquare;
+				touchStatus = false;
+			}
+			messageBox.innerText = `Please select a number`;
+		});
+	};
+
+	windowSizeChange();
+}
+
 ////////////////////
 /// LocalStorage ///
 ////////////////////
@@ -79,7 +113,11 @@ if (localStorage.length === 0) {
 const updateScoreBoard = () => {
 	const rankDetails = JSON.parse(localStorage.getItem("Rank"));
 	rankDetails.sort((a, b) => (a.time > b.time ? 1 : a.time < b.time ? -1 : 0));
-	for (let i = 0; i < rankDetails.length; i++) {
+	for (
+		let i = 0;
+		i < (rankDetails.length <= 10 ? rankDetails.length : 10);
+		i++
+	) {
 		const tr = document.createElement("tr");
 		tr.classList.add("result");
 		const tdRank = document.createElement("td");
