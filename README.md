@@ -8,7 +8,7 @@
 
 <img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/b71134b7-69d0-4f79-ac3f-72bbec25fcc3" width="600">
 <br><br>
-<span>GitHub page: https://hzhec93.github.io/Project-1-Sudoku/</span>
+<span>GitHub page: https://hzhec.github.io/Project-1-Sudoku/</span>
 
 <h2>Approach Taken</h2>
 <ol>
