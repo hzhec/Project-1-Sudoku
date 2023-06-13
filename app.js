@@ -33,12 +33,12 @@ let completedBoard = {
 };
 let activeBtn = null;
 let hintStatus = false;
+let buttonStatus = false;
 let numOfHint = 3;
 let minute = 0;
 let second = 0;
 let myTimer;
 let parsedDetails = [];
-let compareArray = [];
 
 const movesBox = document.querySelector(".moves-box");
 const numSelector = document.querySelectorAll(".number-selector");
@@ -174,10 +174,10 @@ function drop(event) {
 		let squareRow = parseInt(event.target.getAttribute("row"));
 		let squareCol = parseInt(event.target.getAttribute("col"));
 		let squareIndex = rowColToIndex(squareRow, squareCol);
-		compareArray[squareIndex] = parseInt(draggableElement.id);
+		loadedPuzzle[squareIndex] = parseInt(draggableElement.id);
 		// if (
 		// 	!checkDuplicates(
-		// 		compareArray,
+		// 		loadedPuzzle,
 		// 		parseInt(squareIndex),
 		// 		parseInt(draggableElement.id)
 		// 	)
@@ -189,7 +189,7 @@ function drop(event) {
 		event.target.classList.toggle(
 			"duplicate",
 			!checkDuplicates(
-				compareArray,
+				loadedPuzzle,
 				parseInt(squareIndex),
 				parseInt(draggableElement.id)
 			)
@@ -293,7 +293,6 @@ const randomBoard = () => {
 	boardIndex = randomIndex;
 	// Clone array to loadedPuzzle
 	completedPuzzle = [...completedBoard[boardIndex]];
-	compareArray = [...sudokuBoard[boardIndex]];
 	return (loadedPuzzle = [...sudokuBoard[boardIndex]]);
 };
 
@@ -352,28 +351,30 @@ const generateSudoku = (array) => {
 				let squareRow = parseInt(event.target.getAttribute("row"));
 				let squareCol = parseInt(event.target.getAttribute("col"));
 				let squareIndex = rowColToIndex(squareRow, squareCol);
-				if (event.target.classList.contains("duplicate")) {
-					event.target.classList.remove("duplicate");
-				}
-				if (hintStatus) {
-					// console.log(completedPuzzle[squareIndex]);
-					selectedSquare = completedPuzzle[squareIndex];
-					numOfHint--;
-					hintBtn.innerText = `Hint: ${numOfHint}`;
-					if (numOfHint === 0) {
-						hintBtn.disabled = true;
+				if (buttonStatus) {
+					if (event.target.classList.contains("duplicate")) {
+						event.target.classList.remove("duplicate");
 					}
-					activeBtn.classList.remove("selected");
-					hintStatus = false;
+					if (hintStatus) {
+						// console.log(completedPuzzle[squareIndex]);
+						selectedSquare = completedPuzzle[squareIndex];
+						numOfHint--;
+						hintBtn.innerText = `Hint: ${numOfHint}`;
+						if (numOfHint === 0) {
+							hintBtn.disabled = true;
+						}
+						activeBtn.classList.remove("selected");
+						hintStatus = false;
+					}
+					if (selectedSquare !== "") {
+						loadedPuzzle[squareIndex] = parseInt(selectedSquare);
+					} else {
+						loadedPuzzle[squareIndex] = 0;
+					}
+					event.target.innerText = selectedSquare;
+					toggleButton(event);
+					messageBox.innerText = `Please select a number`;
 				}
-				if (selectedSquare !== "") {
-					compareArray[squareIndex] = parseInt(selectedSquare);
-				} else {
-					compareArray[squareIndex] = 0;
-				}
-				event.target.innerText = selectedSquare;
-				toggleButton(event);
-				messageBox.innerText = `Please select a number`;
 			});
 		}
 	}
@@ -393,6 +394,7 @@ const toggleButton = (event) => {
 		activeBtn.classList.remove("selected");
 		activeBtn = event.target;
 	}
+	buttonStatus = false;
 };
 
 //////////////////////////////////////////
@@ -423,6 +425,7 @@ clearBtn.addEventListener("click", (event) => {
 	selectedSquare = "";
 	messageBox.innerText = `Select a box to clear the number`;
 	toggleButton(event);
+	buttonStatus = true;
 });
 
 // Add event listener to hint button to provide answer for selected box
@@ -431,6 +434,7 @@ hintBtn.addEventListener("click", (event) => {
 	hintStatus = true;
 	// console.log(hintStatus);
 	toggleButton(event);
+	buttonStatus = true;
 });
 
 // Add event listener to newGameBtn to load new sudoku puzzle board
@@ -502,7 +506,7 @@ submitBtn.addEventListener("click", () => {
 resetBtn.addEventListener("click", () => {
 	timePause();
 	timeStart();
-	generateSudoku(loadedPuzzle);
+	generateSudoku([...sudokuBoard[boardIndex]]);
 });
 
 // Add event listener to completeBtn to load all answers
