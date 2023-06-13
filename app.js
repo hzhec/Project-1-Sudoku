@@ -113,7 +113,11 @@ if (localStorage.length === 0) {
 // Function to load scoreboard from localStorage
 const updateScoreBoard = () => {
 	const rankDetails = JSON.parse(localStorage.getItem("Rank"));
-	rankDetails.sort((a, b) => (a.time > b.time ? 1 : a.time < b.time ? -1 : 0));
+	if (rankDetails.length !== 0) {
+		rankDetails.sort((a, b) =>
+			a.time > b.time ? 1 : a.time < b.time ? -1 : 0
+		);
+	}
 	for (
 		let i = 0;
 		i < (rankDetails.length <= 10 ? rankDetails.length : 10);
