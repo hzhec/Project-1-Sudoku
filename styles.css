@@ -296,10 +296,7 @@ input {
 }
 
 .form {
-	/* background-color: rgb(255, 228, 228); */
 	width: 60%;
-	/* border: 1px solid black; */
-	border-radius: 10px;
 	margin-bottom: 30px;
 }
 
@@ -410,5 +407,30 @@ input {
 		width: 100px;
 		font-size: 15px;
 		margin: 10px;
+	}
+
+	.form {
+		width: 90%;
+		margin-bottom: 20px;
+	}
+
+	.form-container {
+		width: 90%;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-self: center;
+	}
+
+	.form-container label {
+		width: 30%;
+		margin: 5px 0px;
+		align-items: center;
+		text-align: center;
+	}
+
+	.form-container input {
+		width: 60%;
+		margin: 5px 0px;
 	}
 }
