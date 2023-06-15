@@ -23,4 +23,5 @@ export const updateScoreBoard = () => {
 			tableDetails.appendChild(tr);
 		}
 	});
+	// console.log(getScore());
 };
