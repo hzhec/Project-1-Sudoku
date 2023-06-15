@@ -4,7 +4,6 @@ import {
 	addDoc,
 	getDocs,
 	query,
-	where,
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
 const sbRef = collection(db, "score");
@@ -20,11 +19,11 @@ export const addScore = (name, time) => {
 		});
 };
 
-export async function getScore(name = "") {
+export async function getScore() {
 	const scores = [];
 	try {
-		const q = query(sbRef, where("Name", "==", name));
-		const snapshot = name !== "" ? await getDocs(q) : await getDocs(sbRef);
+		const q = query(sbRef);
+		const snapshot = await getDocs(q);
 		snapshot.forEach((doc) => scores.push({ ...doc.data() }));
 	} catch (error) {
 		alert(error);
