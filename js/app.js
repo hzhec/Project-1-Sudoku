@@ -1,3 +1,12 @@
+import { addScore } from "../firebase/firebaseData.js";
+import { rowColToIndex, checkDuplicates, solve } from "./solver.js";
+import { updateScoreBoard } from "./scoreboard.js";
+import { timeStart, timePause, timeReset } from "./timer.js";
+
+// getScore().then((results) => {
+// 	console.log(results);
+// });
+
 let selectedSquare = "";
 let loadedPuzzle = [];
 let completedPuzzle = [];
@@ -35,13 +44,11 @@ let activeBtn = null;
 let hintStatus = false;
 let buttonStatus = false;
 let numOfHint = 3;
-let minute = 0;
-let second = 0;
-let myTimer;
-let parsedDetails = [];
+
+// let parsedDetails = [];
 
 const movesBox = document.querySelector(".moves-box");
-const numSelector = document.querySelectorAll(".number-selector");
+// const numSelector = document.querySelectorAll(".number-selector");
 const numBox = document.querySelector(".number-box");
 const gameBox = document.querySelector(".game-box");
 const messageBox = document.querySelector(".message-box");
@@ -55,8 +62,9 @@ const completeBtn = document.querySelector(".complete-btn");
 const startTime = document.querySelector(".start-time");
 const pauseTime = document.querySelector(".pause-time");
 const inputName = document.querySelector("#input-name");
-const tableDetails = document.querySelector("tbody");
 const timerBox = document.querySelector(".timer");
+const minute = document.querySelector("#minute");
+const second = document.querySelector("#second");
 const alertMessage = document.querySelector(".alert");
 const alertLogin = document.querySelector(".alert-login");
 
@@ -104,78 +112,47 @@ if (screenWidth < 750) {
 ////////////////////
 /// LocalStorage ///
 ////////////////////
-if (localStorage.length === 0) {
-	localStorage.setItem("Rank", "[]");
-} else {
-	parsedDetails = JSON.parse(localStorage.getItem("Rank"));
-}
+
+// if (localStorage.length === 0) {
+// 	localStorage.setItem("Rank", "[]");
+// } else {
+// 	parsedDetails = JSON.parse(localStorage.getItem("Rank"));
+// }
 
 // Function to load scoreboard from localStorage
-const updateScoreBoard = () => {
-	const rankDetails = JSON.parse(localStorage.getItem("Rank"));
-	if (rankDetails.length !== 0) {
-		rankDetails.sort((a, b) =>
-			a.time > b.time ? 1 : a.time < b.time ? -1 : 0
-		);
-	}
-	for (
-		let i = 0;
-		i < (rankDetails.length <= 10 ? rankDetails.length : 10);
-		i++
-	) {
-		const tr = document.createElement("tr");
-		tr.classList.add("result");
-		const tdRank = document.createElement("td");
-		tdRank.innerText = i + 1;
-		tr.appendChild(tdRank);
-		tableDetails.appendChild(tr);
-		Object.values(rankDetails[i]).forEach((value) => {
-			const td = document.createElement("td");
-			td.innerText = value;
-			tr.appendChild(td);
-			tableDetails.appendChild(tr);
-		});
-	}
-};
+// const updateScoreBoard = () => {
+// 	const rankDetails = JSON.parse(localStorage.getItem("Rank"));
+// 	if (rankDetails.length !== 0) {
+// 		rankDetails.sort((a, b) =>
+// 			a.time > b.time ? 1 : a.time < b.time ? -1 : 0
+// 		);
+// 	}
+// 	for (
+// 		let i = 0;
+// 		i < (rankDetails.length <= 10 ? rankDetails.length : 10);
+// 		i++
+// 	) {
+// 		const tr = document.createElement("tr");
+// 		tr.classList.add("result");
+// 		const tdRank = document.createElement("td");
+// 		tdRank.innerText = i + 1;
+// 		tr.appendChild(tdRank);
+// 		tableDetails.appendChild(tr);
+// 		Object.values(rankDetails[i]).forEach((value) => {
+// 			const td = document.createElement("td");
+// 			td.innerText = value;
+// 			tr.appendChild(td);
+// 			tableDetails.appendChild(tr);
+// 		});
+// 	}
+// };
 
 updateScoreBoard();
 
-/////////////
-/// Timer ///
-/////////////
-const timer = () => {
-	// Increment of 1 for second once timer function invoked
-	if ((second += 1) == 60) {
-		second = 0;
-		minute++;
-	}
-	document.querySelector("#minute").innerText = returnData(minute);
-	document.querySelector("#second").innerText = returnData(second);
-};
-
-const returnData = (input) => {
-	return input > 9 ? input : `0${input}`;
-};
-
-const timeStart = () => {
-	myTimer = setInterval(() => {
-		timer();
-	}, 1000);
-};
-
-const timePause = () => {
-	clearInterval(myTimer);
-};
-
-const timeReset = () => {
-	minute = 0;
-	second = 0;
-	document.querySelector("#minute").innerText = "00";
-	document.querySelector("#second").innerText = "00";
-};
 /////////////////////////////////
 /// Add Drag & Drop Functions ///
 /////////////////////////////////
+
 // Drag start event handler
 const dragStart = (event) => {
 	// Set the data being dragged
@@ -201,7 +178,7 @@ const dragLeave = (event) => {
 };
 
 // Drop event handler
-function drop(event) {
+const drop = (event) => {
 	// Prevent the default behavior
 	event.preventDefault();
 
@@ -238,126 +215,13 @@ function drop(event) {
 			)
 		);
 	}
-}
+};
 
 numBox.addEventListener("dragstart", dragStart);
 gameBox.addEventListener("dragover", dragOver);
 gameBox.addEventListener("dragenter", dragEnter);
 gameBox.addEventListener("dragleave", dragLeave);
 gameBox.addEventListener("drop", drop);
-
-////////////////////////////
-/// Check & Solve Puzzle ///
-////////////////////////////
-// Taking reference from https://lisperator.net/blog/javascript-sudoku-solver/
-// Convert index of a value in an array to row and column
-const indexToRowCol = (index) => {
-	return { row: Math.floor(index / 9), col: index % 9 };
-};
-
-// Convert value with row and column to its index of an array
-const rowColToIndex = (row, col) => {
-	return row * 9 + col;
-};
-
-// Function to check for duplicate value along row/col/subgrid
-const checkDuplicates = (array, index, value) => {
-	let valuePosition = indexToRowCol(index);
-	// console.log(valuePosition);
-	let dupPassed = true;
-
-	if (value === NaN) {
-		value = 0;
-	}
-	// Check if the number duplicated in the same row
-	for (let col = 0; col < 9; col++) {
-		if (valuePosition.col !== col) {
-			if (
-				array[rowColToIndex(valuePosition.row, col)] === value &&
-				value !== 0
-			) {
-				document
-					.querySelector(`[row="${valuePosition.row}"][col="${col}"]`)
-					.classList.add("duplicate");
-				dupPassed = false;
-				// return false;
-			} else {
-				document
-					.querySelector(`[row="${valuePosition.row}"][col="${col}"]`)
-					.classList.remove("duplicate");
-			}
-		}
-	}
-
-	// Check if the number duplicated in the same col
-	for (let row = 0; row < 9; row++) {
-		if (valuePosition.row !== row) {
-			if (
-				array[rowColToIndex(row, valuePosition.col)] === value &&
-				value !== 0
-			) {
-				document
-					.querySelector(`[row="${row}"][col="${valuePosition.col}"]`)
-					.classList.add("duplicate");
-				dupPassed = false;
-				// return false;
-			} else {
-				document
-					.querySelector(`[row="${row}"][col="${valuePosition.col}"]`)
-					.classList.remove("duplicate");
-			}
-		}
-	}
-
-	// Check if the number duplicated in 3x3 box (subgrid)
-	let boxRow = Math.floor(valuePosition.row / 3) * 3;
-	let boxCol = Math.floor(valuePosition.col / 3) * 3;
-	for (let row = boxRow; row < boxRow + 3; row++) {
-		for (let col = boxCol; col < boxCol + 3; col++) {
-			if (valuePosition.row !== row && valuePosition.col !== col) {
-				if (array[rowColToIndex(row, col)] === value && value !== 0) {
-					document
-						.querySelector(`[row="${row}"][col="${col}"]`)
-						.classList.add("duplicate");
-					dupPassed = false;
-					// return false;
-				} else {
-					document
-						.querySelector(`[row="${row}"][col="${col}"]`)
-						.classList.remove("duplicate");
-				}
-			}
-		}
-	}
-
-	// If no duplicates found, return true.
-	return dupPassed;
-};
-
-// Function to solve the sudoku puzzle
-const solve = (array) => {
-	const squares = document.querySelectorAll(".square");
-	let completeStatus = true;
-	for (let i = 0; i < 81; i++) {
-		let value = array[i];
-		if (value !== "" || value !== NaN) {
-			if (checkDuplicates(array, i, value)) {
-				if (squares[i].classList.contains("active")) {
-					squares[i].classList.add("passed");
-				}
-			} else if (squares[i].classList.contains("active")) {
-				if (squares[i].classList.contains("passed")) {
-					squares[i].classList.remove("passed");
-				}
-				squares[i].innerText = "";
-				completeStatus = false;
-			}
-		} else {
-			completeStatus = false;
-		}
-	}
-	return completeStatus;
-};
 
 //////////////////////////////////////
 /// Load pre-loaded board randomly ///
@@ -485,6 +349,7 @@ const toggleButton = (event) => {
 //////////////////////////////////////////
 /// Add event listeners to all buttons ///
 //////////////////////////////////////////
+
 // Add event listener to number 1 - 9 for input purpose
 // numSelector.forEach((element) =>
 // 	element.addEventListener("click", (event) => {
@@ -559,22 +424,28 @@ submitBtn.addEventListener("click", () => {
 	const squares = document.querySelectorAll(".square");
 	const array = [];
 	squares.forEach((element) => {
-		array.push(parseInt(element.innerText));
+		let value =
+			element.innerText !== ""
+				? parseInt(element.innerText)
+				: element.innerText;
+		array.push(value);
 	});
 	if (solve(array)) {
 		timePause();
 		messageBox.innerText = "Puzzle Completed!";
-		let updateMinute = returnData(minute);
-		let updateSecond = returnData(second);
-		const playerDetail = {
-			name: inputName.value,
-			time: `${updateMinute}:${updateSecond}`,
-		};
-		parsedDetails.push(playerDetail);
-		localStorage.setItem("Rank", JSON.stringify(parsedDetails));
+		let updateMinute = minute.innerText;
+		let updateSecond = second.innerText;
+		// const playerDetail = {
+		// 	name: inputName.value,
+		// 	time: `${updateMinute}:${updateSecond}`,
+		// };
+		// parsedDetails.push(playerDetail);
+		// localStorage.setItem("Rank", JSON.stringify(parsedDetails));
 		document.querySelectorAll(".result").forEach((element) => {
 			element.parentNode.removeChild(element);
 		});
+
+		addScore(inputName.value, `${updateMinute}:${updateSecond}`);
 		updateScoreBoard();
 		movesBox.style.display = "none";
 		pauseTime.disabled = true;
@@ -604,6 +475,7 @@ completeBtn.addEventListener("click", () => {
 	const cancelBtn = document.querySelector(".cancelBtn");
 	const uName = document.querySelector("#uname");
 	const psw = document.querySelector("#psw");
+
 	loginBtn.addEventListener("click", () => {
 		if (uName.value === "admin" && psw.value === "123") {
 			const squares = document.querySelectorAll(".square");
@@ -622,6 +494,7 @@ completeBtn.addEventListener("click", () => {
 			alertLogin.style.display = "flex";
 		}
 	});
+
 	cancelBtn.addEventListener("click", () => {
 		uName.value = "";
 		psw.value = "";
