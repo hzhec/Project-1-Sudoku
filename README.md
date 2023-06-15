@@ -8,7 +8,7 @@
 
 <img src="https://github.com/hzhec93/Project-1-Sudoku/assets/127362399/b71134b7-69d0-4f79-ac3f-72bbec25fcc3" width="600">
 <br><br>
-<span>GitHub page: https://hzhec.github.io/Project-1-Sudoku/</span>
+<span>GitHub page: https://hzhec.github.io/Project-1-Sudoku/ (Will not work for now as firebaseConfig.js file is not uploaded)</span>
 
 <h2>Approach Taken</h2>
 <ol>
@@ -23,7 +23,7 @@
   <li>Change style when no duplicate number is found along row/column/subgrid</li>
   <li>Add timer to sudoku puzzle</li>
   <li>Change input method from clicking to drag-and-drop</li>
-  <li>Add scoreboard to track top 10 players results (Updated: using firebase instead of localStorage</li>
+  <li>Add scoreboard to track top 10 players results (Updated: using firebase instead of localStorage)</li>
   <li>Add Media Query of max-width: 750px</li>
 </ol>
 
