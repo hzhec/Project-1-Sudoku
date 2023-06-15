@@ -23,7 +23,7 @@
   <li>Change style when no duplicate number is found along row/column/subgrid</li>
   <li>Add timer to sudoku puzzle</li>
   <li>Change input method from clicking to drag-and-drop</li>
-  <li>Add scoreboard to track top 10 players results</li>
+  <li>Add scoreboard to track top 10 players results (Updated: using firebase instead of localStorage</li>
   <li>Add Media Query of max-width: 750px</li>
 </ol>
 
