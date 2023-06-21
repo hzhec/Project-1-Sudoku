@@ -14,30 +14,30 @@ let boardIndex = "";
 // Initialise sudoku board. Puzzles extracted by sudoku iphone game app.
 let sudokuBoard = {
 	0: [
-		8, 9, 4, 0, 0, 0, 0, 5, 1, 0, 0, 7, 0, 0, 3, 0, 6, 9, 0, 6, 0, 5, 0, 4, 0,
-		0, 0, 0, 3, 8, 4, 5, 1, 0, 0, 0, 2, 0, 0, 0, 0, 6, 8, 0, 5, 6, 0, 0, 0, 0,
-		2, 7, 0, 0, 3, 8, 0, 1, 7, 5, 0, 0, 0, 4, 0, 0, 3, 6, 9, 1, 0, 8, 0, 1, 0,
-		0, 0, 0, 5, 7, 0,
+		8, 9, 4, 0, 0, 0, 0, 5, 1, 0, 0, 7, 0, 0, 3, 0, 6, 9, 0, 6, 0, 5, 0, 4, 0, 0,
+		0, 0, 3, 8, 4, 5, 1, 0, 0, 0, 2, 0, 0, 0, 0, 6, 8, 0, 5, 6, 0, 0, 0, 0, 2, 7,
+		0, 0, 3, 8, 0, 1, 7, 5, 0, 0, 0, 4, 0, 0, 3, 6, 9, 1, 0, 8, 0, 1, 0, 0, 0, 0,
+		5, 7, 0,
 	],
 	1: [
-		3, 7, 8, 4, 1, 0, 2, 0, 0, 5, 6, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 7, 6, 0, 0,
-		0, 1, 0, 0, 0, 3, 0, 0, 8, 0, 0, 0, 3, 2, 1, 0, 0, 6, 9, 0, 0, 0, 6, 2, 8,
-		4, 3, 5, 7, 0, 0, 4, 0, 0, 0, 0, 0, 5, 0, 5, 0, 0, 3, 1, 9, 4, 6, 6, 1, 0,
-		0, 0, 0, 7, 0, 8,
+		3, 7, 8, 4, 1, 0, 2, 0, 0, 5, 6, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 7, 6, 0, 0, 0,
+		1, 0, 0, 0, 3, 0, 0, 8, 0, 0, 0, 3, 2, 1, 0, 0, 6, 9, 0, 0, 0, 6, 2, 8, 4, 3,
+		5, 7, 0, 0, 4, 0, 0, 0, 0, 0, 5, 0, 5, 0, 0, 3, 1, 9, 4, 6, 6, 1, 0, 0, 0, 0,
+		7, 0, 8,
 	],
 };
 let completedBoard = {
 	0: [
-		8, 9, 4, 6, 2, 7, 3, 5, 1, 5, 2, 7, 8, 1, 3, 4, 6, 9, 1, 6, 3, 5, 9, 4, 2,
-		8, 7, 7, 3, 8, 4, 5, 1, 6, 9, 2, 2, 4, 9, 7, 3, 6, 8, 1, 5, 6, 5, 1, 9, 8,
-		2, 7, 3, 4, 3, 8, 2, 1, 7, 5, 9, 4, 6, 4, 7, 5, 3, 6, 9, 1, 2, 8, 9, 1, 6,
-		2, 4, 8, 5, 7, 3,
+		8, 9, 4, 6, 2, 7, 3, 5, 1, 5, 2, 7, 8, 1, 3, 4, 6, 9, 1, 6, 3, 5, 9, 4, 2, 8,
+		7, 7, 3, 8, 4, 5, 1, 6, 9, 2, 2, 4, 9, 7, 3, 6, 8, 1, 5, 6, 5, 1, 9, 8, 2, 7,
+		3, 4, 3, 8, 2, 1, 7, 5, 9, 4, 6, 4, 7, 5, 3, 6, 9, 1, 2, 8, 9, 1, 6, 2, 4, 8,
+		5, 7, 3,
 	],
 	1: [
-		3, 7, 8, 4, 1, 5, 2, 6, 9, 5, 6, 1, 9, 2, 8, 4, 7, 3, 4, 2, 9, 7, 6, 3, 5,
-		8, 1, 7, 4, 5, 3, 9, 6, 8, 1, 2, 8, 3, 2, 1, 5, 7, 6, 9, 4, 1, 9, 6, 2, 8,
-		4, 3, 5, 7, 9, 8, 4, 6, 7, 2, 1, 3, 5, 2, 5, 7, 8, 3, 1, 9, 4, 6, 6, 1, 3,
-		5, 4, 9, 7, 2, 8,
+		3, 7, 8, 4, 1, 5, 2, 6, 9, 5, 6, 1, 9, 2, 8, 4, 7, 3, 4, 2, 9, 7, 6, 3, 5, 8,
+		1, 7, 4, 5, 3, 9, 6, 8, 1, 2, 8, 3, 2, 1, 5, 7, 6, 9, 4, 1, 9, 6, 2, 8, 4, 3,
+		5, 7, 9, 8, 4, 6, 7, 2, 1, 3, 5, 2, 5, 7, 8, 3, 1, 9, 4, 6, 6, 1, 3, 5, 4, 9,
+		7, 2, 8,
 	],
 };
 let activeBtn = null;
@@ -55,10 +55,14 @@ const messageBox = document.querySelector(".message-box");
 const textBox = document.querySelector(".text-box");
 const clearBtn = document.querySelector(".clear-selector");
 const hintBtn = document.querySelector(".hint-selector");
-const newGameBtn = document.querySelector(".new-game");
+const newGameBtn = document.querySelector(".new-game-btn");
 const submitBtn = document.querySelector(".submit-btn");
 const resetBtn = document.querySelector(".reset-btn");
 const completeBtn = document.querySelector(".complete-btn");
+// const newGame = document.querySelector(".new-game");
+const submit = document.querySelector(".submit");
+const reset = document.querySelector(".reset");
+const complete = document.querySelector(".complete");
 const startTime = document.querySelector(".start-time");
 const pauseTime = document.querySelector(".pause-time");
 const inputName = document.querySelector("#input-name");
@@ -69,9 +73,9 @@ const alertMessage = document.querySelector(".alert");
 const alertLogin = document.querySelector(".alert-login");
 
 // Initial condition of the buttons when page loaded
-submitBtn.disabled = true;
-resetBtn.disabled = true;
-completeBtn.disabled = true;
+submit.style.display = "none";
+reset.style.display = "none";
+complete.style.display = "none";
 gameBox.style.display = "none";
 timerBox.style.display = "none";
 
@@ -409,9 +413,9 @@ newGameBtn.addEventListener("click", () => {
 		movesBox.style.display = "flex";
 		pauseTime.disabled = false;
 		startTime.disabled = true;
-		submitBtn.disabled = false;
-		resetBtn.disabled = false;
-		completeBtn.disabled = false;
+		submit.style.display = "flex";
+		reset.style.display = "flex";
+		complete.style.display = "flex";
 		generateSudoku(randomBoard());
 		timeStart();
 	} else {
@@ -425,9 +429,7 @@ submitBtn.addEventListener("click", () => {
 	const array = [];
 	squares.forEach((element) => {
 		let value =
-			element.innerText !== ""
-				? parseInt(element.innerText)
-				: element.innerText;
+			element.innerText !== "" ? parseInt(element.innerText) : element.innerText;
 		array.push(value);
 	});
 	if (solve(array)) {
@@ -450,9 +452,9 @@ submitBtn.addEventListener("click", () => {
 		movesBox.style.display = "none";
 		pauseTime.disabled = true;
 		startTime.disabled = true;
-		resetBtn.disabled = true;
-		completeBtn.disabled = true;
-		submitBtn.disabled = true;
+		submit.style.display = "none";
+		reset.style.display = "none";
+		complete.style.display = "none";
 		inputName.value = "";
 		inputName.disabled = false;
 	}

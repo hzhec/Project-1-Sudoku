@@ -141,7 +141,7 @@ input {
 .active.hover {
 	background-color: lightgoldenrodyellow;
 	transform: scale(1.15);
-	border: 2px solid black;
+	border: 1px solid rgb(140, 140, 140);
 	box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.215);
 }
 
@@ -243,7 +243,7 @@ input {
 	line-height: 40px;
 	font-size: 30px;
 	font-weight: bold;
-	border: 2px solid black;
+	border: 1px solid rgb(200, 200, 200);
 	border-radius: 6px;
 	margin: 10px 10px;
 }
@@ -272,6 +272,7 @@ input {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
+	align-items: center;
 	margin: 35px;
 }
 

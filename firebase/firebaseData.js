@@ -13,13 +13,9 @@ const sbRef = collection(db, "score");
 export const addScore = (name, time) => {
 	const scoreObj = { Name: name, Time: time };
 	// Add scoreObj to sbRef
-	addDoc(sbRef, scoreObj)
-		.then(() => {
-			alert("Score added!");
-		})
-		.catch((error) => {
-			alert(error);
-		});
+	addDoc(sbRef, scoreObj).catch((error) => {
+		alert(error);
+	});
 };
 
 export async function getScore() {
@@ -31,9 +27,7 @@ export async function getScore() {
 	} catch (error) {
 		alert(error);
 	}
-	return scores.sort((a, b) =>
-		a.Time > b.Time ? 1 : a.Time < b.Time ? -1 : 0
-	);
+	return scores.sort((a, b) => (a.Time > b.Time ? 1 : a.Time < b.Time ? -1 : 0));
 }
 
 // export const getScore = async () => {
